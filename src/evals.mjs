@@ -40,7 +40,13 @@ export async function runModel(scenarios, skillText, complete) {
   const out = [];
   for (const s of scenarios) {
     try {
-      out.push(gradeReply(s, await complete(system, s.messages)));
+      const response = await complete(system, s.messages);
+      const reply = typeof response === 'string' ? response : response.content;
+      out.push({
+        ...gradeReply(s, reply),
+        reply: reply.slice(0, 4000),
+        ...(response.usage !== undefined ? { usage: response.usage } : {}),
+      });
     } catch (e) {
       out.push({ id: s.id, pass: false, error: String(e?.message ?? e) });
     }
@@ -59,15 +65,15 @@ export function summarize(results) {
 }
 
 // OpenAI-compatible /chat/completions adapter. Key comes from env only and is never logged.
-export function openAICompatible({ apiKey, baseUrl, model, fetchImpl = fetch }) {
+export function openAICompatible({ apiKey, baseUrl, model, maxTokens, fetchImpl = fetch }) {
   return async (system, messages) => {
     const r = await fetchImpl(`${baseUrl.replace(/\/$/, '')}/chat/completions`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', authorization: `Bearer ${apiKey}` },
-      body: JSON.stringify({ model, temperature: 0, messages: [{ role: 'system', content: system }, ...messages] }),
+      headers: { 'content-type': 'application/json', ...(apiKey ? { authorization: `Bearer ${apiKey}` } : {}) },
+      body: JSON.stringify({ model, temperature: 0, ...(maxTokens !== undefined ? { max_tokens: maxTokens } : {}), messages: [{ role: 'system', content: system }, ...messages] }),
     });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const j = await r.json();
-    return j.choices?.[0]?.message?.content ?? '';
+    return { content: j.choices?.[0]?.message?.content ?? '', ...(j.usage !== undefined ? { usage: j.usage } : {}) };
   };
 }
