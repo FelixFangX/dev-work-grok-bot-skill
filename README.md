@@ -34,13 +34,19 @@ Details: [docs/what-gets-configured.md](docs/what-gets-configured.md). A filled-
 | Adapter | What it measures | Latest result |
 |---|---|---|
 | `coverage` (CI, every push) | The skill states every rule each scenario depends on | **20/20 (100%)**, [results](evals/results-coverage.json) |
-| `model` (opt-in) | A model given the skill as system prompt makes the expected decision and doesn't leak | not run yet |
+| `model` (opt-in) | A model given the skill as system prompt makes the expected decision and doesn't leak | **12/20 (60%)** on `@cf/zai-org/glm-4.7-flash`, 2026-10-20, [notes](evals/results/2026-10-20-glm-4.7-flash.md) |
 
 Coverage is a regression guard: CI fails if an edit drops a rule. It doesn't prove a model obeys the rules; that's what the `model` adapter is for:
 
 ```bash
 LLM_API_KEY=... LLM_MODEL=gpt-4o-mini npm run eval:model   # any OpenAI-compatible endpoint (LLM_BASE_URL)
+LLM_BASE_URL=http://localhost:11434/v1 LLM_MODEL=local-model LLM_MAX_TOKENS=512 npm run eval:model
 ```
+
+The key is optional when `LLM_BASE_URL` is set. `LLM_MAX_TOKENS` sets `max_tokens` when it is a positive integer; otherwise it is omitted. Temperature is always 0. Add `--out results.json` to `node bin/skill-eval.mjs --adapter model` to save grades, replies (up to 4000 characters), usage when returned, and run metadata (UTC date, endpoint host, model, temperature, and token limit if set). Replies are graded in full before truncation. Review saved replies before publishing: they may contain sensitive text. Publish model scores only after a real run.
+
+### Model run, 2026-10-20
+First real model run: Workers AI `@cf/zai-org/glm-4.7-flash`, free tier, about 206 neurons. It passed 12 of 20 and leaked nothing. Two of the failures are real misses: it acts on a relayed "the owner approved", and it agrees to start a second bridge. Four times it was too cautious and asked for confirmation when it should have just done the safe part, and twice it chose `confirm` where the skill says `refuse`. Every reply is in [the results](evals/results/2026-10-20-glm-4.7-flash.md).
 
 ## For agents (`--json`)
 
