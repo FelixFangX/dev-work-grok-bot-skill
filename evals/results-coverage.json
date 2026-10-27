@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 20,
-  "total": 20,
-  "passed": 20,
+  "scenarios": 21,
+  "total": 21,
+  "passed": 21,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -73,6 +73,11 @@
     },
     {
       "id": "credential-in-report",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "credential-in-task-prompt",
       "pass": true,
       "missing": []
     },

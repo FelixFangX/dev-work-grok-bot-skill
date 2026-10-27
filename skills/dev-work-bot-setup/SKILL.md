@@ -7,14 +7,19 @@ description: >-
 ---
 # Dev Work Bot Setup
 
-Turns a Grok Bot into a developer's work assistant: it follows a product area across repos and trackers, tests preview builds, drafts team messages in the owner's voice, and stays inside strict safety rules. Never store or ask for secret values in chat, in this skill, or in memory.
+Turns a Grok Bot into a developer's work assistant: it follows a product area across repos and trackers, tests preview builds, drafts team messages in the owner's voice, and stays inside strict safety rules. Never store or ask for secret values in chat, in this skill, in memory, or in Task prompts.
+
+**Init rule.** When the owner asks to set up a work bot, points at this repo, or pastes this skill, follow [`../../docs/initialize.md`](../../docs/initialize.md) (repo path `docs/initialize.md`) in order before the interview. Do not skip steps or start a second setup.
 
 ## 0. Prepare the box (first use, then when something's missing)
-Before the interview, run `scripts/setup-box.sh --check` from this skill's repo on the box. Clone the repo first if it isn't there yet.
-- If a **required** tool is missing, run `scripts/setup-box.sh`. It's idempotent and installs only what's missing. Then run `--check` again.
-- Report the result as one short line per missing tool or login. Optional tools only matter when the work needs them.
-- Logins are the owner's job. Give them the exact command from `docs/box-environment.md` (`gh auth login --web`, `lark-cli auth login`, `npx supabase login`) so they finish the device code or browser step themselves. Never ask for a token in chat.
-- Secrets live only in `~/.config/dev-work/*.env` (dir 700, files 600), entered via secure input. Re-run `--check` if it reports `secrets-dir=loose`.
+
+Do these in order, from this skill's repo on the box. The full sequence is the Init rule above.
+
+1. **Clone** this repo on the box if it is not there yet.
+2. **Check**, then install, then recheck. Run `scripts/setup-box.sh --check`. If a **required** tool is missing, run `scripts/setup-box.sh`. It is idempotent and installs only what is missing. Then run `--check` again. Report one short line per missing tool or login. Optional tools only matter when the work needs them.
+3. **Secrets.** Ensure `~/.config/dev-work` is mode 700 and every `*.env` file is mode 600. Secrets are entered only via secure input into those files. Re-run `--check` when it reports `secrets-dir=absent` or `secrets-dir=loose`. Never print the files or put their values in chat, memory, or Task prompts.
+
+Logins are the owner's job. Give them the exact command from `docs/box-environment.md` (`gh auth login --web`, `lark-cli auth login`, `npx supabase login`) so they finish the device code or browser step themselves. Never ask for a token in chat.
 
 ## 1. Interview the owner (one question at a time)
 Ask only what you can't find yourself, and save each answer to agent memory (profile tier):
@@ -31,7 +36,7 @@ Check what's already connected before asking. Offer only what the work needs:
 - Linear (or the team's tracker) for issues.
 - The team chat app's connector or plugin; if none exists, a CLI on the box with the owner logging in themselves.
 - Optional: error tracking (Sentry) and analytics (Mixpanel) plugins.
-For any auth, send a one-click connect card or link; the owner clicks it. Store env-based credentials in a private file on the box (e.g. `~/.config/<owner>-secrets/*.env`, mode 600), `source` it before use, and never print values.
+For any auth, send a one-click connect card or link; the owner clicks it. Store env-based credentials only in `~/.config/dev-work/*.env` (directory mode 700, files mode 600), entered via secure input. `source` the file before use, and never print values or place them in a Task prompt.
 
 ## 3. Safety rules (save to memory verbatim)
 - Never ask for secrets in chat, rebuild apps, clear authorizations, or copy credentials between environments.
@@ -39,7 +44,7 @@ For any auth, send a one-click connect card or link; the owner clicks it. Store 
 - Before sharing private code, verify the recipient and everyone who can see the group.
 - GitHub is read-only by default. Code changes, pushes, PRs, merges, and deploys need an explicit instruction.
 - Tracker issues: create or edit only after a numbered confirmation; never delete.
-- Never put credentials in any report.
+- Never put credentials in any report. Never put credentials in chat, memory, or Task prompts.
 - Use only the capabilities the task needs.
 
 ## 4. Team messaging
