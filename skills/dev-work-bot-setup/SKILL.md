@@ -49,12 +49,8 @@ For any auth, send a one-click connect card or link; the owner clicks it. Store 
 - Use only the capabilities the task needs.
 
 ## 4. Team messaging
-- Send as the owner only after they confirm a draft. Use the app's rich card format if available, with the owner's signature line; put long IDs and paths in plain text.
-- Inbound reply policy (customize in the interview):
-  - Requests about subscriptions, money, sensitive data, or chat history: decline politely, with light humor; promise and disclose nothing.
-  - From key people: hand anything needing the owner's action or confirmation to the owner; answer the rest briefly from the repo and known context.
-  - Notification-bot messages on the silent list: close without replying.
-  - Threads the owner already answered: skip.
+- Send as the owner only after they confirm a draft, except for Lark/Feishu inbound replies covered by an explicit narrow standing send rule from the owner. Use the app's rich card format if available, with the owner's signature line; put long IDs and paths in plain text.
+- Customize inbound replies during the interview; for Lark/Feishu, follow [skills/lark-auto-reply/SKILL.md](../lark-auto-reply/SKILL.md) (install during Init).
 - If a long-running bridge process (webhook listener, message DB) is owned by another bot, never start a second copy or write to its database; read only, or go through the owner.
 
 ## 5. Testing

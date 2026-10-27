@@ -40,3 +40,18 @@ test('Lark auth documents non-blocking login, QR handoff, and scope verification
     assert.ok(read(path).includes('role-packs.md'), `${path} routes to role packs`);
   }
 });
+
+
+test('Lark inbound sub-skill covers group and DM policy and is wired into setup', () => {
+  const skill = read('skills/lark-auto-reply/SKILL.md');
+  assert.match(skill, /name: lark-auto-reply/);
+  assert.match(skill, /group/i);
+  assert.match(skill, /DM|p2p/);
+  assert.match(skill, /draft-then-confirm/);
+  assert.match(skill, /Never auto-reply to greetings, banter/);
+  assert.match(skill, /reply only inside that thread/);
+  assert.match(skill, /Only the owner's own words/);
+  for (const path of ['skills/dev-work-bot-setup/SKILL.md', 'docs/initialize.md', 'docs/role-packs.md', 'docs/what-gets-configured.md', 'README.md', 'AGENTS.md']) {
+    assert.ok(read(path).includes('lark-auto-reply'), `${path} routes to Lark inbound policy`);
+  }
+});

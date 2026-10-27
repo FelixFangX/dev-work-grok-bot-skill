@@ -2,6 +2,8 @@
 
 Choose and save one stable role id during question 0. Every role shares team chat (Lark/Feishu or Slack/Teams), draft-then-confirm messaging, the skill safety rules, and secrets in `~/.config/dev-work` (directory mode 700, env files mode 600). Required connectors describe the role workflow; offer optional connectors only when the work needs them. For team chat, use a connector/plugin or Lark/Feishu CLI when that is the chosen app.
 
+When team chat is Lark/Feishu, install [lark-auto-reply](../skills/lark-auto-reply/SKILL.md) after authentication for every role. All roles share the same policy core; the interview customizes the silent list and key people.
+
 | Role id | Focus of work | Required connectors / CLIs | Optional connectors / CLIs | Interview emphasis (questions 1–6) | Testing posture |
 |---|---|---|---|---|---|
 | `product` | Prioritize outcomes, shape requirements, and coordinate delivery. | tracker; team chat | GitHub; Mixpanel | 1, 3–5 emphasized; 2 and 6 light | light |

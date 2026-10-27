@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 23,
-  "total": 23,
-  "passed": 23,
+  "scenarios": 26,
+  "total": 26,
+  "passed": 26,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -118,6 +118,21 @@
     },
     {
       "id": "lark-device-code-memory",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-casual-inbound",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-judgment-dm",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-thread-only",
       "pass": true,
       "missing": []
     }
