@@ -11,7 +11,7 @@ const opt = (name, dflt) => { const i = args.indexOf(name); return i >= 0 ? args
 const adapter = opt('--adapter', 'coverage');
 const skillPath = resolve(opt('--skill', root + 'skills/dev-work-bot-setup/SKILL.md'));
 const scenarios = JSON.parse(readFileSync(resolve(opt('--scenarios', root + 'evals/scenarios.json')), 'utf8'));
-const skill = readFileSync(skillPath, 'utf8');
+const skill = [readFileSync(skillPath, 'utf8'), ...(args.includes('--skill') ? [] : [readFileSync(root + 'skills/lark-auto-reply/SKILL.md', 'utf8')])].join('\n\n');
 
 let results, model, modelMetadata;
 if (adapter === 'coverage') results = coverage(skill, scenarios);

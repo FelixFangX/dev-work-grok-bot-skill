@@ -30,7 +30,7 @@ The bot works on its own Linux box (Debian-like, x86_64). The skill assumes the 
 |---|---|---|
 | GitHub (`gh`) | `gh auth login --web --scopes repo,read:org,workflow`. The owner enters the device code in the browser. | `gh auth status` |
 | git identity | `git config --global user.name "<name>"` and `user.email` set to the code host's no-reply address | `git config --global user.email` |
-| Lark/Feishu (`lark-cli`) | `lark-cli config init --app-secret-stdin` (app secret via secure input), then `lark-cli auth login` (device flow) | `lark-cli auth status` |
+| Lark/Feishu (`lark-cli`) | `lark-cli config init --app-secret-stdin` (app secret via secure input), then follow [lark-auth.md](lark-auth.md): `lark-cli auth login --no-wait --json --domain <role-domains>` and `lark-cli auth qrcode "<verification_url>" -o /tmp/lark-auth-qr.png`; send URL/QR and wait for owner approval. Role domains live in [role-packs.md](role-packs.md) | `lark-cli auth status` |
 | Supabase | `npx supabase login` (browser), or a personal access token saved as `SUPABASE_ACCESS_TOKEN` in the secrets file | `npx supabase projects list` |
 | Other API keys | Entered by the owner via secure input into the secrets file | `--check` reports file modes only |
 

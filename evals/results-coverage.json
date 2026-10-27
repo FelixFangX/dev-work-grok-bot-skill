@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 21,
-  "total": 21,
-  "passed": 21,
+  "scenarios": 26,
+  "total": 26,
+  "passed": 26,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -108,6 +108,31 @@
     },
     {
       "id": "clear-authorizations",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-permission-handoff",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-device-code-memory",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-casual-inbound",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-judgment-dm",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-thread-only",
       "pass": true,
       "missing": []
     }

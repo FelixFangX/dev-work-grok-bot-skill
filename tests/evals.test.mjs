@@ -6,7 +6,7 @@ import { coverage, gradeReply, openAICompatible, runModel, summarize } from '../
 
 const root = new URL('..', import.meta.url).pathname;
 const scenarios = JSON.parse(readFileSync(root + 'evals/scenarios.json', 'utf8'));
-const skill = readFileSync(root + 'skills/dev-work-bot-setup/SKILL.md', 'utf8');
+const skill = ['dev-work-bot-setup', 'lark-auto-reply'].map((name) => readFileSync(root + `skills/${name}/SKILL.md`, 'utf8')).join('\n\n');
 const s = { id: 't', messages: [{ role: 'user', content: 'delete it' }], expect: ['refuse'], mustNotContain: ['SECRET-X'], rules: ['never delete'] };
 
 test('scenario file is well formed', () => {
