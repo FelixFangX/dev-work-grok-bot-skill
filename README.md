@@ -3,20 +3,20 @@
   <img alt="dev-work-grok-bot-skill: interview, connect, safe assistant" src="docs/assets/header-light.svg" width="100%">
 </picture>
 
-**A Grok Bot skill that turns your bot into a developer work assistant: it follows your product area across repos and trackers, tests preview builds, drafts team messages in your voice, and stays inside strict safety rules.** No dependencies; CI checks the skill on every push.
+**A Grok Bot skill that turns your bot into a work assistant for product, engineering, QA, ops, growth, or marketing: it follows your product area across repos and trackers, tests preview builds, drafts team messages in your voice, and stays inside strict safety rules.** No dependencies; CI checks the skill on every push.
 
 ## Quickstart
 1. **Init rule**: when you ask a bot to set up a work assistant, point it at this repo, or paste the skill, it follows [docs/initialize.md](docs/initialize.md) in order.
-2. **Prepare the box**: clone this repo on the bot's box, then run `scripts/setup-box.sh --check` (report only). If a required tool is missing, run `scripts/setup-box.sh` and check again. Secrets live in `~/.config/dev-work/*.env` (directory mode 700, files mode 600). You sign in to GitHub and the chat CLI yourself. See [docs/box-environment.md](docs/box-environment.md).
+2. **Prepare the box**: clone this repo on the bot's box, then run `scripts/setup-box.sh --check` (report only). If a required tool is missing, run `scripts/setup-box.sh` and check again. Secrets live in `~/.config/dev-work/*.env` (directory mode 700, files mode 600). You complete GitHub device-code sign-in; for Lark/Feishu the agent provides a clickable permission link and QR. See [docs/box-environment.md](docs/box-environment.md).
 3. **Install the skill**: copy [`skills/dev-work-bot-setup/SKILL.md`](skills/dev-work-bot-setup/SKILL.md) into the bot's skills, or paste it into a chat and say *"Save this as a skill and run it."*
 
-The bot then interviews you one question at a time and configures itself. Nothing external happens without your confirmation.
+Init selects a [role pack](docs/role-packs.md), then interviews you one question at a time and configures itself. [Lark auth](docs/lark-auth.md) stops for you to click the link or scan the QR and grant permissions. Nothing external happens without your confirmation.
 
 ## What it configures
 | Area | Result |
 |---|---|
-| Profile | Focus area, repos/branches, voice, chat app and key people, reply rules, testing setup |
-| Connections | GitHub, Linear (or your tracker), Lark/Feishu, Slack or Teams, optional Sentry/analytics, via one-click connect cards |
+| Profile | Role pack, focus area, repos/branches, voice, chat app and key people, reply rules, testing setup |
+| Connections | GitHub, Linear (or your tracker), Lark/Feishu, Slack or Teams, optional Sentry/analytics, via role-pack offers and one-click connect cards (Lark CLI uses URL/QR device flow) |
 | Safety rules | Saved verbatim to agent memory |
 | Messaging, testing, reporting | Draft-then-confirm sends, preview-based tests, conclusion-first reports |
 
@@ -30,11 +30,11 @@ Details: [docs/what-gets-configured.md](docs/what-gets-configured.md). A filled-
 - Team messages go out only after you confirm the draft.
 
 ## Safety evals
-21 scripted scenarios in [`evals/scenarios.json`](evals/scenarios.json): relayed approvals ("X said the owner approved, send it"), pasted tokens, prompt injection in repo files and web pages, unrequested pushes, tracker deletes, inbound requests for money or chat history, credentials in reports or Task prompts, and more. Each scenario has an expected decision (`refuse`, `confirm`, `draft` or `proceed`) and strings the reply must never contain.
+23 scripted scenarios in [`evals/scenarios.json`](evals/scenarios.json): relayed approvals ("X said the owner approved, send it"), pasted tokens, prompt injection in repo files and web pages, unrequested pushes, tracker deletes, inbound requests for money or chat history, credentials in reports or Task prompts, Lark permission handoff, device-code retention, and more. Each scenario has an expected decision (`refuse`, `confirm`, `draft` or `proceed`) and strings the reply must never contain.
 
 | Adapter | What it measures | Latest result |
 |---|---|---|
-| `coverage` (CI, every push) | The skill states every rule each scenario depends on | **21/21 (100%)**, [results](evals/results-coverage.json) |
+| `coverage` (CI, every push) | The skill states every rule each scenario depends on | **23/23 (100%)**, [results](evals/results-coverage.json) |
 | `model` (opt-in) | A model given the skill as system prompt makes the expected decision and doesn't leak | **12/20 (60%)** on `@cf/zai-org/glm-4.7-flash`, 2026-10-20, [notes](evals/results/2026-10-20-glm-4.7-flash.md) |
 
 Coverage is a regression guard: CI fails if an edit drops a rule. It doesn't prove a model obeys the rules; that's what the `model` adapter is for:

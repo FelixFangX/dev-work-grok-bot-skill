@@ -1,13 +1,13 @@
 ---
 name: dev-work-bot-setup
 description: >-
-  Use when a developer wants to turn this Grok Bot into a work assistant for a
-  product codebase: GitHub/Linear/chat-app connections, safety rules, message
+  Use when an owner wants a work assistant for product, engineering, QA, ops,
+  growth, or marketing: role-based connections, safety rules, message
   drafting, testing and reporting conventions.
 ---
 # Dev Work Bot Setup
 
-Turns a Grok Bot into a developer's work assistant: it follows a product area across repos and trackers, tests preview builds, drafts team messages in the owner's voice, and stays inside strict safety rules. Never store or ask for secret values in chat, in this skill, in memory, or in Task prompts.
+Turns a Grok Bot into a work assistant for product, engineering, QA, ops, growth, or marketing: it follows a product area across repos and trackers, tests preview builds, drafts team messages in the owner's voice, and stays inside strict safety rules. Never store or ask for secret values in chat, in this skill, in memory, or in Task prompts.
 
 **Init rule.** When the owner asks to set up a work bot, points at this repo, or pastes this skill, follow [`../../docs/initialize.md`](../../docs/initialize.md) (repo path `docs/initialize.md`) in order before the interview. Do not skip steps or start a second setup.
 
@@ -19,10 +19,11 @@ Do these in order, from this skill's repo on the box. The full sequence is the I
 2. **Check**, then install, then recheck. Run `scripts/setup-box.sh --check`. If a **required** tool is missing, run `scripts/setup-box.sh`. It is idempotent and installs only what is missing. Then run `--check` again. Report one short line per missing tool or login. Optional tools only matter when the work needs them.
 3. **Secrets.** Ensure `~/.config/dev-work` is mode 700 and every `*.env` file is mode 600. Secrets are entered only via secure input into those files. Re-run `--check` when it reports `secrets-dir=absent` or `secrets-dir=loose`. Never print the files or put their values in chat, memory, or Task prompts.
 
-Logins are the owner's job. Give them the exact command from `docs/box-environment.md` (`gh auth login --web`, `lark-cli auth login`, `npx supabase login`) so they finish the device code or browser step themselves. Never ask for a token in chat.
+For GitHub/Supabase, give the exact command from `docs/box-environment.md` (`gh auth login --web`, `npx supabase login`) for the owner device-code or browser step. For Lark, follow [Lark auth](../../docs/lark-auth.md) (repo path `docs/lark-auth.md`): run `--no-wait --json` with role domains, generate `qrcode`, send the clickable URL and QR, and end the turn for permission approval. Do not only dump a raw CLI command for the owner to discover alone. Never print tokens or save device codes to long-term memory. Never ask for a token in chat.
 
 ## 1. Interview the owner (one question at a time)
 Ask only what you can't find yourself, and save each answer to agent memory (profile tier):
+0. **Role**: choose `product`, `engineering`, `qa`, `ops`, `growth`, or `marketing`; save it and apply [role packs](../../docs/role-packs.md) (repo path `docs/role-packs.md`). Skip or lighten questions the pack marks optional or light.
 1. **Focus area**: product, feature area, and the tracking issue(s) that define "done".
 2. **Repos and branches**: frontend and backend repos, integration branches, and which PR hosts the preview environment.
 3. **Voice**: reply language, length, and tone (default: short, the owner's own chat voice; reports grouped into lean key bullets).
@@ -31,10 +32,10 @@ Ask only what you can't find yourself, and save each answer to agent memory (pro
 6. **Testing**: preview URL pattern, API vs UI test split, and any deployment-protection bypass (collected only via secure input).
 
 ## 2. Connect services
-Check what's already connected before asking. Offer only what the work needs:
+Check what's already connected before asking. Offer only what the work needs, filtered by the saved role pack:
 - GitHub (or your code host) for repos, PRs and CI.
 - Linear (or the team's tracker) for issues.
-- The team chat app's connector or plugin; if none exists, a CLI on the box with the owner logging in themselves.
+- The team chat app's connector or plugin; for Lark/Feishu CLI follow `docs/lark-auth.md` through URL/QR approval. Use the engineering / mvp-recommend domains from `docs/role-packs.md` for engineering, and the selected role domains for other roles.
 - Optional: error tracking (Sentry) and analytics (Mixpanel) plugins.
 For any auth, send a one-click connect card or link; the owner clicks it. Store env-based credentials only in `~/.config/dev-work/*.env` (directory mode 700, files mode 600), entered via secure input. `source` the file before use, and never print values or place them in a Task prompt.
 
@@ -57,6 +58,7 @@ For any auth, send a one-click connect card or link; the owner clicks it. Store 
 - If a long-running bridge process (webhook listener, message DB) is owned by another bot, never start a second copy or write to its database; read only, or go through the owner.
 
 ## 5. Testing
+Apply the role pack posture and saved interview answer: full preview API+UI, light, analytics-only, or none. When preview testing applies:
 - API tests: Playwright (or similar) scripts run on the box against the PR's preview URL.
 - UI/UX flows: click through in the box browser with saved logins.
 - Deployment-protection bypass secrets come only from the owner via secure input.

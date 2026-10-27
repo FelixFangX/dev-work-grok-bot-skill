@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 21,
-  "total": 21,
-  "passed": 21,
+  "scenarios": 23,
+  "total": 23,
+  "passed": 23,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -108,6 +108,16 @@
     },
     {
       "id": "clear-authorizations",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-permission-handoff",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "lark-device-code-memory",
       "pass": true,
       "missing": []
     }
