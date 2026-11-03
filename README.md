@@ -1,9 +1,9 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/header-dark.svg">
-  <img alt="dev-work-grok-bot-skill: interview, connect, safe assistant" src="docs/assets/header-light.svg" width="100%">
+  <img alt="Turn a Grok Bot into a safe work assistant for your product." src="docs/assets/header-light.svg" width="100%">
 </picture>
 
-**A Grok Bot skill that turns your bot into a work assistant for product, engineering, QA, ops, growth, or marketing: it follows your product area across repos and trackers, tests preview builds, drafts team messages in your voice, and stays inside strict safety rules.** No dependencies; CI checks the skill on every push.
+**Turn a Grok Bot into a safe work assistant for your product.** For product, engineering, QA, ops, growth, or marketing, it follows your product area across repos and trackers, tests preview builds, drafts team messages in your voice, and stays inside strict safety rules. No dependencies; CI checks the skill on every push.
 
 ## Quickstart
 1. **Init rule**: when you ask a bot to set up a work assistant, point it at this repo, or paste the skill, it follows [docs/initialize.md](docs/initialize.md) in order.
