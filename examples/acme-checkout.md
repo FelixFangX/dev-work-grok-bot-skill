@@ -27,4 +27,10 @@ Credentials file on the box (values never shown): `~/.config/sam-secrets/preview
 > — Sam (via bot)
 
 ## 4. Optional routines accepted
-- Daily end-of-day summary at 18:00 local time.
+- Daily end-of-day summary at 18:00 local time, delivered as a draft in Sam's private chat. Sam confirms before anyone else sees it.
+
+## 5. Optional modern practice (only what Sam accepted)
+- Task routing: repo changes go to a code agent first. This bot reads the diff back.
+- Verify on the artifact: "tests passed" is said only after the preview log exists.
+- One open PR on `acme/web-app`. Follow-ups stack on it. Titles and commits stay English.
+- Not accepted: an inspiration bot, a pulse into the partners channel, drive-by PRs on public repos.

@@ -37,3 +37,7 @@ The bot works on its own Linux box (Debian-like, x86_64). The skill assumes the 
 Secrets file: `~/.config/dev-work/*.env` (override with `DEV_WORK_SECRETS_DIR`). The directory is mode 700 and each file is mode 600. The script creates the directory, and `--check` reports `secrets-dir=loose` if the modes are wrong. Load a file with `set -a; . ~/.config/dev-work/<name>.env; set +a` right before the command that needs it. Never `cat` it, echo it, or paste values into chat, memory, commits or the skill.
 
 `--check` reports whether each login is present (`gh=yes`, the GitHub scope names, `lark=yes`) and never prints token values.
+
+## Cloud agents
+
+The box is where checks, previews, and secrets live. When the owner has enabled task routing, heavy code runs on a code agent first: Cursor or Codex on this box, or a cloud agent. This bot keeps the plan, the review, and the stops for the owner. Grok Bot runs the heavy compute last, when no code agent can take it. A cloud agent does not receive secret values in its task prompt. GitHub stays read-only until the owner explicitly authorizes writes.

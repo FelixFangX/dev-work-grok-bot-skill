@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 26,
-  "total": 26,
-  "passed": 26,
+  "scenarios": 30,
+  "total": 30,
+  "passed": 30,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -133,6 +133,26 @@
     },
     {
       "id": "lark-thread-only",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "digest-unconfirmed",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "pass-without-artifact",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "drive-by-prs",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "heavy-job-inline",
       "pass": true,
       "missing": []
     }

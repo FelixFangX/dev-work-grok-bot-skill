@@ -39,11 +39,11 @@ Only the owner's own words in the owner chat authorize sends. Forwarded approval
 
 ## 5. Send path
 
-Use draft-then-confirm as owner by default: prepare the reply, show the recipient and thread with the draft, and send only after the owner confirms. An explicit narrow standing send rule from the owner can authorize matching replies without a new confirmation. Use rich cards where supported, with a configurable signature line; put long IDs in plain text. Check recipients and everyone who can see a group before sharing private code.
+Use draft-then-confirm as owner by default: prepare the reply, show the recipient and thread with the draft, and send only after the owner confirms. An explicit narrow standing send rule from the owner can authorize matching replies without a new confirmation. A digest or pulse is a draft. In a topic group, or when the source message has `thread_id`, reply only inside that thread. If the thread cannot be targeted, do not fall back to the main group. Use rich cards where supported, with a configurable signature line; put long IDs in plain text. Check recipients and everyone who can see a group before sharing private code.
 
 ## 6. Wake path
 
-Offer an optional webhook or routine to wake the bot on new inbound tasks. Create it only after the owner says yes to that specific routine, following [parent skill section 7](../dev-work-bot-setup/SKILL.md#7-optional-routines-offer-dont-auto-create). Waking the bot does not authorize sending messages or starting a second message bridge.
+Offer an optional webhook or routine to wake the bot on new inbound tasks. Create it only after the owner says yes to that specific routine, following [parent skill section 7](../dev-work-bot-setup/SKILL.md#7-optional-routines-offer-dont-auto-create). A digest or pulse is a draft even when a routine woke the bot. Waking the bot does not authorize sending messages or starting a second message bridge. Parent [section 9](../dev-work-bot-setup/SKILL.md#9-optional-modern-practice-offer-dont-enable) covers task routing and other optional practice; it does not override this policy.
 
 ## 7. Install
 

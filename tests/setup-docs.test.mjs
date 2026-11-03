@@ -55,3 +55,24 @@ test('Lark inbound sub-skill covers group and DM policy and is wired into setup'
     assert.ok(read(path).includes('lark-auto-reply'), `${path} routes to Lark inbound policy`);
   }
 });
+
+test('optional modern practice is in the skill and stays under the safety rules', () => {
+  const skill = read('skills/dev-work-bot-setup/SKILL.md');
+  for (const phrase of [
+    'Code and repo work goes to a code agent first',
+    'while a code agent is available',
+    'A digest or pulse is a draft',
+    'Do not report a pass from a plan or from another bot\'s say-so',
+    'do not open a stream of drive-by PRs',
+    'one open PR at a time',
+    'those sections win',
+    'Grok Bot runs the heavy compute last',
+  ]) assert.ok(skill.includes(phrase), phrase);
+  const packs = read('docs/role-packs.md');
+  for (const lane of ['`work`', '`ops`', '`inspiration`', '`infra`']) assert.ok(packs.includes(lane), lane);
+  assert.ok(read('docs/initialize.md').includes('Task routing'));
+  const readme = read('README.md');
+  assert.match(readme, /ChatGPT/);
+  assert.match(readme, /Claude/);
+  assert.match(readme, /A naked chat will send it/);
+});

@@ -17,6 +17,17 @@ When team chat is Lark/Feishu, install [lark-auto-reply](../skills/lark-auto-rep
 
 Questions are 1 focus area, 2 repos and branches, 3 voice, 4 team chat, 5 reply rules, and 6 testing. Ask question 0 (role) first. Save answers to profile memory. Light questions need only enough detail for the work; skip optional questions when irrelevant and record that choice. Full preview API+UI means API tests against PR previews and browser checks; light means targeted checks for the task; analytics-only means validating metrics and experiment data; none means no default testing setup. The owner can refine the posture.
 
+## Fleet lanes (optional)
+
+The role table above is this bot. A fleet is separate bots, each with one lane, and only after the owner says yes to that bot. Do not create extra bots during setup. Lanes do not share secrets. Skill section 9 is the behavior; this table is the map.
+
+| Lane | Which role pack | What it does |
+|---|---|---|
+| `work` | `product`, `engineering`, `qa`, `growth`, or `marketing` | Delivery for that pack. Draft-then-confirm. GitHub stays read-only until an explicit instruction. |
+| `ops` | `ops` | Incidents and reliability, under the same safety rules. |
+| `inspiration` | none (no production role) | Research and drafts. No production writes, no sends, no second bridge. |
+| `infra` | none (the box, not the product) | Box, connectors, and secret hygiene. Secrets stay in `~/.config/dev-work`. No application deploy unless the owner explicitly instructs. |
+
 ## Lark domain presets
 
 Pass the selected comma-separated list to `lark-cli auth login --domain …` via [lark-auth.md](lark-auth.md). Prefer the role pack over `--recommend` or `--domain all` so non-engineering roles do not over-request. If role is unset, use engineering / mvp-recommend, then confirm and save the role during the interview.
