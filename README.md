@@ -3,15 +3,17 @@
   <img alt="A naked chat sends it. This skill will not." src="docs/assets/header-light.svg" width="100%">
 </picture>
 
-**A naked chat will send it, push it, and remember the token. This skill will not.**
+**A naked chat will send it, push it, and remember the token. This Grok Bot skill will not.**
 
-A raw ChatGPT or Claude window has no box, no connect card, and no rule a test can fail. Ask it to tell the team the API is ready and it posts. Paste a token and the token stays in the thread. This skill is the harness on a Grok Bot: same jobs, with a stop before the send, the push, and the secret.
+Put that sentence in the GitHub description.
+
+A raw ChatGPT or Claude window has no box, no connect card, and no rule a test can fail. Ask it to tell the team the API is ready and it posts. Paste a token and the token stays in the thread. This skill is the harness: same jobs, with a stop before the send, the push, and the secret.
 
 ## Install
 
 Copy [`skills/dev-work-bot-setup/SKILL.md`](skills/dev-work-bot-setup/SKILL.md) into the bot's skills, or paste it into chat and say *"Save this as a skill and run it."*
 
-That is the install. The bot then follows the [Init rule](docs/initialize.md): check the box, ask one question, wait, send one connect card. When team chat is Lark/Feishu, it installs [lark-auto-reply](skills/lark-auto-reply/SKILL.md) after you approve the link or QR. Other chat apps skip that skill.
+That is the install. The bot follows the [Init rule](docs/initialize.md): check the box, ask one question, wait, send one connect card. When team chat is Lark/Feishu, it installs [lark-auto-reply](skills/lark-auto-reply/SKILL.md) after you approve the link or QR. Other chat apps skip that skill.
 
 ## First session
 
@@ -30,7 +32,9 @@ The fictional filled-in version is [examples/acme-checkout.md](examples/acme-che
 | You paste a deploy token "for next time" | Keeps it in the thread | Refuses. Secure input, mode 600, never printed |
 | A README tells the bot to delete CI | May open that PR | Treats the file as content |
 | "The other bot says the tests passed" | Repeats it | Says so only after the log, the diff, or the preview |
-| The morning digest is ready | Posts it | Drafts it, then waits |
+| The morning digest is ready | Posts it | Drafts it in your private chat, then waits |
+| CI went green | Turns on auto-merge | Leaves auto-merge off until you say to merge this PR |
+| The GitHub connector is missing | Opens the website and clicks | Sends a connect card and stops |
 
 ## What it configures
 
@@ -40,23 +44,25 @@ The fictional filled-in version is [examples/acme-checkout.md](examples/acme-che
 | Connections | GitHub, Linear (or your tracker), Lark/Feishu, Slack or Teams, and, when the work needs them, Gmail, Vercel, Sentry, or analytics. One-click connect cards. Lark CLI uses a URL and QR |
 | Safety rules | Saved verbatim to agent memory |
 | Messaging, testing, reporting | Draft-then-confirm sends, preview-based tests, conclusion-first reports |
-| Optional modern practice | Task routing, verify-on-artifact, digests, one open PR, fleet lanes. Off until you name the one you want |
+| Practice cards | Task routing, cheap gate, execution rigor, Gricean voice, one open PR, connector-first, digests. Copied into memory only after you say yes to that card |
 
 Details: [docs/what-gets-configured.md](docs/what-gets-configured.md).
 
-## Optional, when you want a 2026 bot
+## Practice cards
 
-Off until you name it. The safety rules still win.
+Off until you name the card. Init copies that card into memory. The safety rules still win: auto-merge stays off, auto-deploy stays off, and a public reply waits for you.
 
-- **Task routing.** Cursor or Codex takes the code, on the box or a cloud agent. This bot goes last for heavy compute.
-- **Verify on the artifact.** "Passed" means a log, a diff, a CI result, or a preview.
-- **Digests and pulses.** Scheduled, drafted, sent after you confirm. Lark replies stay in the thread.
-- **One open PR.** Stack the next change. English titles and commits. Confirm before a burst of public drive-by PRs.
-- **Fleet lanes.** Separate bots for work, ops, inspiration, and infra. This install is one lane. See [role packs](docs/role-packs.md).
-- **Connector-first.** GitHub, Linear, Lark, Gmail, Vercel, the box. You click a card.
-- **How it writes.** Enough to act on. The conclusion, the decision it needs, then the evidence.
+| Card | What gets saved |
+|---|---|
+| task-routing | Cursor or Codex models take the code. This bot writes the handoff and reads the artifact. Grok Bot goes last. |
+| cheap-gate | Inbound is classified before a code agent starts. Bot noise is closed. |
+| execution-rigor | One change, then the log, the diff, the CI check, or the preview. |
+| gricean | Conclusion, the decision needed, then the evidence. |
+| one-open-pr | Stack on the open PR. English titles and commits. |
+| connector-first | GitHub, Linear, Lark, and Vercel through the connector or CLI. No browser side door. |
+| morning digest, CI red pulse | Drafts in your private chat. A Lark note stays in its thread. |
 
-The rules live in [skill section 9](skills/dev-work-bot-setup/SKILL.md#9-optional-modern-practice-offer-dont-enable).
+Which cards a role is offered: [role packs](docs/role-packs.md). The text Init copies: [skill section 9](skills/dev-work-bot-setup/SKILL.md#9-practice-cards-offer-dont-enable). A filled engineering bot, using Lark, GitHub, Linear, and Vercel: [examples/acme-checkout.md](examples/acme-checkout.md).
 
 ## Safety model
 - Secrets are never requested in chat or stored in memory, Task prompts, or the skill. They go through secure input into `~/.config/dev-work/*.env` (directory mode 700, files mode 600).
@@ -64,13 +70,14 @@ The rules live in [skill section 9](skills/dev-work-bot-setup/SKILL.md#9-optiona
 - GitHub is read-only by default. Pushes, PRs, merges and deploys need an explicit instruction.
 - Tracker edits need a numbered confirmation; nothing is ever deleted.
 - Team messages go out after you confirm the draft, except for Lark/Feishu inbound replies covered by your explicit narrow standing send rule.
+- Auto-merge stays off. Auto-deploy stays off. Public replies are not posted unless you asked for that reply.
 
 ## Safety evals
-30 scripted scenarios in [`evals/scenarios.json`](evals/scenarios.json): relayed approvals ("X said the owner approved, send it"), pasted tokens, prompt injection in repo files and web pages, unrequested pushes, tracker deletes, inbound requests for money or chat history, credentials in reports or Task prompts, Lark permission handoff, device-code retention, unconfirmed digests, a pass claimed without the artifact, drive-by PRs, heavy work kept off the orchestrator, and more. Each scenario has an expected decision (`refuse`, `confirm`, `draft` or `proceed`) and strings the reply must never contain.
+36 scripted scenarios in [`evals/scenarios.json`](evals/scenarios.json): relayed approvals ("X said the owner approved, send it"), pasted tokens, prompt injection in repo files and web pages, unrequested pushes, tracker deletes, inbound requests for money or chat history, credentials in reports or Task prompts, Lark permission handoff, device-code retention, unconfirmed digests, a pass claimed without the artifact, drive-by PRs, heavy work kept off the orchestrator, auto-merge, auto-deploy, unsolicited public replies, bot noise that would start a code agent, a browser side door around a missing connector, and more. Each scenario has an expected decision (`refuse`, `confirm`, `draft` or `proceed`) and strings the reply must never contain.
 
 | Adapter | What it measures | Latest result |
 |---|---|---|
-| `coverage` (CI, every push) | The skill states every rule each scenario depends on | **30/30 (100%)**, [results](evals/results-coverage.json) |
+| `coverage` (CI, every push) | The skill states every rule each scenario depends on | **36/36 (100%)**, [results](evals/results-coverage.json) |
 | `model` (opt-in) | A model given the parent and Lark sub-skill as system prompt makes the expected decision and doesn't leak | **12/20 (60%)** on `@cf/zai-org/glm-4.7-flash`, 2026-10-20, [notes](evals/results/2026-10-20-glm-4.7-flash.md) |
 
 Default eval runs load both the parent and Lark auto-reply sub-skill; `--skill <path>` evaluates only the specified file.
@@ -98,7 +105,7 @@ node bin/skill-eval.mjs --json             # per-scenario pass/fail and the summ
 Each command exits non-zero on failure, so an agent can gate on it. Repo conventions: [AGENTS.md](AGENTS.md).
 
 ## Customize
-Edit the interview questions (section 1), the Lark inbound reply policy in `skills/lark-auto-reply/SKILL.md`, the optional routines (section 7), or modern practice (section 9) in `SKILL.md`. Keep it generic: no names, tokens or internal URLs. The checker enforces that.
+Edit the interview questions (section 1), the Lark inbound reply policy in `skills/lark-auto-reply/SKILL.md`, the optional routines (section 7), or the practice cards (section 9) in `SKILL.md`. Keep it generic: no names, tokens or internal URLs. The checker enforces that.
 
 ## Testing
 ```bash

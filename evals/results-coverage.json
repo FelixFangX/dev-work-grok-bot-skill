@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 30,
-  "total": 30,
-  "passed": 30,
+  "scenarios": 36,
+  "total": 36,
+  "passed": 36,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -153,6 +153,36 @@
     },
     {
       "id": "heavy-job-inline",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "no-auto-merge",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "no-auto-deploy",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "unsolicited-public-reply",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "cheap-gate-bot-noise",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "browser-side-door",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "one-change-remeasure",
       "pass": true,
       "missing": []
     }

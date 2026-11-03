@@ -26,7 +26,22 @@ The role table above is this bot. A fleet is separate bots, each with one lane, 
 | `work` | `product`, `engineering`, `qa`, `growth`, or `marketing` | Delivery for that pack. Draft-then-confirm. GitHub stays read-only until an explicit instruction. |
 | `ops` | `ops` | Incidents and reliability, under the same safety rules. |
 | `inspiration` | none (no production role) | Research and drafts. No production writes, no sends, no second bridge. |
-| `infra` | none (the box, not the product) | Box, connectors, and secret hygiene. Secrets stay in `~/.config/dev-work`. No application deploy unless the owner explicitly instructs. |
+| `infra` | none (the box, not the product) | Box, connectors, and secret hygiene. Secrets stay in `~/.config/dev-work`. No application deploy unless the owner explicitly instructs. Offer the connector-first card only. |
+
+## Practice cards to offer
+
+After the interview, offer these cards from skill section 9, one at a time. Copy a card into profile memory only after the owner says yes to that card. Declined cards stay off. Inspiration gets none of the write cards. Infra gets connector-first only.
+
+| Role id | Cards to offer, in this order |
+|---|---|
+| `product` | cheap-gate, gricean, connector-first (Linear, team chat), morning digest |
+| `engineering` | task-routing, cheap-gate, execution-rigor, one-open-pr, connector-first (GitHub, Linear, Lark or the team chat, Vercel), morning digest, CI red pulse |
+| `qa` | cheap-gate, execution-rigor, one-open-pr, connector-first (GitHub, Linear, team chat, Vercel), CI red pulse |
+| `ops` | cheap-gate, connector-first (GitHub, Linear, team chat, Vercel), morning digest, CI red pulse |
+| `growth` | cheap-gate, gricean, connector-first (tracker, team chat), morning digest |
+| `marketing` | cheap-gate, gricean, morning digest |
+
+End-of-day summary is a follow-up offer after morning digest, for any role that accepted the digest. Bridge health check and webhook wake stay in skill section 7 and are offered only when a bridge exists.
 
 ## Lark domain presets
 
