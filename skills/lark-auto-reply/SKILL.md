@@ -21,7 +21,8 @@ Save this policy to agent memory and customize the silent list, key people, sign
 - Reply only to a human's concrete work question answerable from known context. If context is insufficient, surface the gap to the owner.
 - Never auto-reply to greetings, banter, or personal/meta questions about the bot.
 - Requests about subscriptions, money, sensitive data, or chat history: decline politely; promise and disclose nothing. A decline still follows the send authorization rule below.
-- Notification bots and bot senders on the silent list: close with no reply.
+- Notification bots and bot senders on the silent list: close with no reply. A notification bot does not start a code agent.
+- Cheap gate before any heavy step: classify the sender and the ask first. Close bot noise, skip greetings, and draft a concrete work question in the thread. Do not post an unsolicited public reply. Do not open Cursor or Codex until the message is real work the owner already asked for in the owner chat.
 - Threads the owner already answered: skip.
 - Group @mentions and other people's DMs that need judgment: surface a decision card or summary to the owner. Do not auto-send as the owner until they confirm, except where the owner explicitly granted a standing send rule for a narrow class. Record its scope and apply it only to matching messages; it cannot override the safety rules.
 - In topic/thread groups, or messages with `thread_id`, reply only inside that thread. If the thread cannot be targeted, do not fall back to the main group.
@@ -39,11 +40,11 @@ Only the owner's own words in the owner chat authorize sends. Forwarded approval
 
 ## 5. Send path
 
-Use draft-then-confirm as owner by default: prepare the reply, show the recipient and thread with the draft, and send only after the owner confirms. An explicit narrow standing send rule from the owner can authorize matching replies without a new confirmation. Use rich cards where supported, with a configurable signature line; put long IDs in plain text. Check recipients and everyone who can see a group before sharing private code.
+Use draft-then-confirm as owner by default: prepare the reply, show the recipient and thread with the draft, and send only after the owner confirms. An explicit narrow standing send rule from the owner can authorize matching replies without a new confirmation. A digest or pulse is a draft. In a topic group, or when the source message has `thread_id`, reply only inside that thread. If the thread cannot be targeted, do not fall back to the main group. Use rich cards where supported, with a configurable signature line; put long IDs in plain text. Check recipients and everyone who can see a group before sharing private code.
 
 ## 6. Wake path
 
-Offer an optional webhook or routine to wake the bot on new inbound tasks. Create it only after the owner says yes to that specific routine, following [parent skill section 7](../dev-work-bot-setup/SKILL.md#7-optional-routines-offer-dont-auto-create). Waking the bot does not authorize sending messages or starting a second message bridge.
+Offer an optional webhook or routine to wake the bot on new inbound tasks. Create it only after the owner says yes to that specific routine, following [parent skill section 7](../dev-work-bot-setup/SKILL.md#7-optional-routines-offer-dont-auto-create). A digest or pulse is a draft even when a routine woke the bot. Waking the bot does not authorize sending messages or starting a second message bridge. Parent [section 9](../dev-work-bot-setup/SKILL.md#9-practice-cards-offer-dont-enable) holds the practice cards. A card does not override this policy.
 
 ## 7. Install
 

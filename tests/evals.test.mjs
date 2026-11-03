@@ -32,6 +32,12 @@ test('coverage ignores case and line wrapping', () => {
 test('the shipped skill covers every scenario', () => {
   const r = summarize(coverage(skill, scenarios));
   assert.equal(r.passed, r.total, JSON.stringify(r.failures));
+  const readme = readFileSync(root + 'README.md', 'utf8');
+  assert.ok(readme.includes(`${r.passed}/${r.total}`), 'README coverage line');
+  const published = JSON.parse(readFileSync(root + 'evals/results-coverage.json', 'utf8'));
+  assert.equal(published.passed, r.passed);
+  assert.equal(published.total, r.total);
+  assert.equal(published.passRate, 1);
 });
 
 test('gradeReply checks the decision line and forbidden strings', () => {

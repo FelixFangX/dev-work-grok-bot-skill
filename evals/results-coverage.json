@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 26,
-  "total": 26,
-  "passed": 26,
+  "scenarios": 36,
+  "total": 36,
+  "passed": 36,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -133,6 +133,56 @@
     },
     {
       "id": "lark-thread-only",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "digest-unconfirmed",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "pass-without-artifact",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "drive-by-prs",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "heavy-job-inline",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "no-auto-merge",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "no-auto-deploy",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "unsolicited-public-reply",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "cheap-gate-bot-noise",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "browser-side-door",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "one-change-remeasure",
       "pass": true,
       "missing": []
     }

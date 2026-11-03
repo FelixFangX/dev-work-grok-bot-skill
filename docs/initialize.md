@@ -104,15 +104,19 @@ Apply sections 4, 5, and 6 of the skill.
 
 **Stop (owner):** any send without an applicable explicit narrow standing send rule, any GitHub write, and any secret a test needs. Drafts otherwise wait for confirmation. Writes wait for an explicit instruction. Secrets wait for secure input.
 
-### 9. Offer optional routines
+### 9. Offer practice cards, one at a time
 
-Offer these, and create each only after the owner says yes (skill section 7):
+Read the saved role's list under "Practice cards to offer" in [role-packs.md](role-packs.md). Offer one card, wait, then the next. Also offer a bridge health check and a webhook wake from skill section 7 if the owner has a bridge. Task routing is a card, not a default.
 
-- Health check of any bridge process
-- Webhook wake for inbound team messages
-- Daily end-of-day summary
+On yes:
 
-**Stop (owner):** a yes for that routine. "Finish setup" is not a yes. Leave the routine uncreated until the owner names it and agrees. Never start a second chat bridge owned by another bot.
+1. Copy that card from skill section 9 into profile memory verbatim.
+2. If the card still has a blank for a schedule or a private destination, ask one question and write only the owner's answer.
+3. Say the card name and that it is saved. Offer the next card.
+
+On no, write the card name as not accepted and offer the next.
+
+**Stop (owner):** a yes or a no for that card. "Finish setup" is not a yes. Leave the card out of memory until the owner names it and agrees. Never start a second chat bridge owned by another bot. Sections 3, 4, and 5 of the skill win over section 9. Never enable auto-merge. Never enable auto-deploy. Do not post an unsolicited public reply.
 
 ### 10. Report the done-when checklist
 
@@ -127,7 +131,7 @@ Wait at each of these. The owner has to act.
 | Auth device code or browser login | Completes the login from [box-environment.md](box-environment.md) | For Lark, runs [lark-auth.md](lark-auth.md), sends URL/QR and waits; for other logins gives the exact command. Does not ask for a token |
 | Secure input | Enters secrets into `~/.config/dev-work/*.env` | Does not read the value back or copy it |
 | Connect card | Clicks the one-click card or link | Sends the card and waits |
-| Routine yes | Says yes to that routine by name | Leaves it uncreated |
+| Routine yes | Says yes to that routine or modern-practice item by name | Leaves it uncreated |
 
 Interview questions wait the same way: one question, one answer, then the next.
 
@@ -148,6 +152,8 @@ Report this checklist. Mark each line done, or waiting on the owner, and name th
 - [ ] Safety rules from the skill are in memory verbatim
 - [ ] Messaging is draft-then-confirm; testing follows the role pack (previews where applicable); reports omit credentials
 - [ ] Optional routines were offered and created only where the owner said yes
+- [ ] Each accepted practice card from skill section 9 is in profile memory verbatim, and each declined card is named
+- [ ] Auto-merge is off, auto-deploy is off, and unsolicited public replies are off
 - [ ] No credentials are in chat, memory, Task prompts, or this report
 - [ ] GitHub is read-only unless the owner explicitly authorized writes
 - [ ] No second chat bridge was started

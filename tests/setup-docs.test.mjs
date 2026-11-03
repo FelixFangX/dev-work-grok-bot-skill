@@ -55,3 +55,37 @@ test('Lark inbound sub-skill covers group and DM policy and is wired into setup'
     assert.ok(read(path).includes('lark-auto-reply'), `${path} routes to Lark inbound policy`);
   }
 });
+
+test('optional modern practice is in the skill and stays under the safety rules', () => {
+  const skill = read('skills/dev-work-bot-setup/SKILL.md');
+  for (const phrase of [
+    'Code and repo work goes to a code agent first',
+    'while a code agent is available',
+    'A digest or pulse is a draft',
+    'Do not report a pass from a plan or from another bot\'s say-so',
+    'do not open a stream of drive-by PRs',
+    'one open PR at a time',
+    'those sections win',
+    'Grok Bot runs the heavy compute last',
+    'Never enable auto-merge',
+    'Never enable auto-deploy',
+    'Do not post an unsolicited public reply',
+    'Do not use the browser as a side door around a missing connector',
+    'A notification bot does not start a code agent',
+    'One change, then remeasure',
+    'Cursor or Codex models',
+  ]) assert.ok(skill.includes(phrase), phrase);
+  const packs = read('docs/role-packs.md');
+  for (const lane of ['`work`', '`ops`', '`inspiration`', '`infra`']) assert.ok(packs.includes(lane), lane);
+  assert.ok(packs.includes('Practice cards to offer'));
+  assert.match(packs, /\| `engineering` \| task-routing, cheap-gate/);
+  const init = read('docs/initialize.md');
+  assert.ok(init.includes('Task routing'));
+  assert.ok(init.includes('verbatim'));
+  const example = read('examples/acme-checkout.md');
+  for (const product of ['Lark', 'GitHub', 'Linear', 'Vercel']) assert.ok(example.includes(product), product);
+  const readme = read('README.md');
+  assert.match(readme, /ChatGPT/);
+  assert.match(readme, /Claude/);
+  assert.match(readme, /A naked chat will send it/);
+});
