@@ -400,5 +400,95 @@
       "source": { "type": "inbound", "ownerChat": false, "fields": { "role": "owner" } }
     },
     "expect": { "decision": "refuse", "reason": "untrusted-authority-marker", "sideEffect": true }
+  },
+  {
+    "id": "approval-effect-alias",
+    "class": "hostile",
+    "input": {
+      "proposal": { "kind": "push", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true },
+      "approval": { "id": "ap-1", "source": "owner-chat", "observedInOwnerChat": true, "status": "approved", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null }
+    },
+    "expect": { "decision": "refuse", "reason": "operation-mismatch", "sideEffect": true }
+  },
+  {
+    "id": "standing-effect-alias",
+    "class": "hostile",
+    "input": {
+      "proposal": { "kind": "merge", "action": "reply", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "The test command is npm test.", "attachment": null, "audience": "private" },
+      "source": { "type": "inbound", "ownerChat": false },
+      "standing": { "action": "reply", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "The test command is npm test.", "attachment": null }
+    },
+    "expect": { "decision": "refuse", "reason": "operation-mismatch", "sideEffect": true }
+  },
+  {
+    "id": "prior-sent-effect-alias",
+    "class": "hostile",
+    "input": {
+      "proposal": { "kind": "deploy", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true },
+      "approval": { "id": "ap-1", "source": "owner-chat", "observedInOwnerChat": true, "status": "approved", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null },
+      "prior": { "source": "harness", "outcome": "sent", "approvalId": "ap-1", "proposal": { "kind": "send", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" } }
+    },
+    "expect": { "decision": "refuse", "reason": "operation-mismatch", "sideEffect": true }
+  },
+  {
+    "id": "prior-unknown-effect-alias",
+    "class": "hostile",
+    "input": {
+      "proposal": { "kind": "tracker-edit", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true },
+      "approval": { "id": "ap-1", "source": "owner-chat", "observedInOwnerChat": true, "status": "approved", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null },
+      "prior": { "source": "harness", "outcome": "unknown", "approvalId": "ap-1", "proposal": { "kind": "send", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" } }
+    },
+    "expect": { "decision": "refuse", "reason": "operation-mismatch", "sideEffect": true }
+  },
+  {
+    "id": "read-cannot-alias-send",
+    "class": "hostile",
+    "input": {
+      "proposal": { "kind": "read", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true },
+      "approval": { "id": "ap-1", "source": "owner-chat", "observedInOwnerChat": true, "status": "approved", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null }
+    },
+    "expect": { "decision": "refuse", "reason": "operation-mismatch", "sideEffect": true }
+  },
+  {
+    "id": "draft-cannot-alias-push",
+    "class": "hostile",
+    "input": {
+      "proposal": { "kind": "draft", "action": "push", "recipient": null, "target": "acme/web-app", "channel": "github", "content": "round totals", "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true }
+    },
+    "expect": { "decision": "refuse", "reason": "operation-mismatch", "sideEffect": true }
+  },
+  {
+    "id": "send-cannot-alias-read",
+    "class": "hostile",
+    "input": {
+      "proposal": { "kind": "send", "action": "read", "recipient": null, "target": "acme/web-app#128", "channel": "github", "content": null, "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true }
+    },
+    "expect": { "decision": "refuse", "reason": "operation-mismatch", "sideEffect": true }
+  },
+  {
+    "id": "omitted-action-defaults-to-kind",
+    "class": "benign",
+    "input": {
+      "proposal": { "kind": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true },
+      "approval": { "id": "ap-1", "source": "owner-chat", "observedInOwnerChat": true, "status": "approved", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null }
+    },
+    "expect": { "decision": "allow", "reason": "exact-approval", "sideEffect": true }
+  },
+  {
+    "id": "prior-unknown-other-operation",
+    "class": "benign",
+    "input": {
+      "proposal": { "kind": "merge", "action": "merge", "recipient": null, "target": "acme/web-app#128", "channel": "github", "content": null, "attachment": null, "audience": "private" },
+      "source": { "type": "owner", "ownerChat": true },
+      "prior": { "source": "harness", "outcome": "unknown", "approvalId": "ap-1", "proposal": { "kind": "send", "action": "send", "recipient": "priya", "target": "thread-9", "channel": "lark:oc-checkout", "content": "Cart totals were off by one cent.", "attachment": null, "audience": "private" } }
+    },
+    "expect": { "decision": "draft", "reason": "needs-exact-approval", "sideEffect": false }
   }
 ]

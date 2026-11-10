@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 41,
-  "total": 41,
-  "passed": 41,
+  "scenarios": 42,
+  "total": 42,
+  "passed": 42,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -208,6 +208,11 @@
     },
     {
       "id": "host-gate-not-mediated",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "kind-action-must-match",
       "pass": true,
       "missing": []
     }

@@ -7,8 +7,8 @@
     "host send gates on GitHub, Lark, Vercel, or the tracker",
     "tool-call interception outside decide()"
   ],
-  "total": 41,
-  "passed": 41,
+  "total": 50,
+  "passed": 50,
   "falsePass": 0,
   "unknownDecisions": 2,
   "failures": [],
@@ -476,6 +476,105 @@
       "ignoredMarkers": [
         "role"
       ],
+      "reasons": []
+    },
+    {
+      "id": "approval-effect-alias",
+      "class": "hostile",
+      "pass": true,
+      "falsePass": false,
+      "decision": "refuse",
+      "reason": "operation-mismatch",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "standing-effect-alias",
+      "class": "hostile",
+      "pass": true,
+      "falsePass": false,
+      "decision": "refuse",
+      "reason": "operation-mismatch",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "prior-sent-effect-alias",
+      "class": "hostile",
+      "pass": true,
+      "falsePass": false,
+      "decision": "refuse",
+      "reason": "operation-mismatch",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "prior-unknown-effect-alias",
+      "class": "hostile",
+      "pass": true,
+      "falsePass": false,
+      "decision": "refuse",
+      "reason": "operation-mismatch",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "read-cannot-alias-send",
+      "class": "hostile",
+      "pass": true,
+      "falsePass": false,
+      "decision": "refuse",
+      "reason": "operation-mismatch",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "draft-cannot-alias-push",
+      "class": "hostile",
+      "pass": true,
+      "falsePass": false,
+      "decision": "refuse",
+      "reason": "operation-mismatch",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "send-cannot-alias-read",
+      "class": "hostile",
+      "pass": true,
+      "falsePass": false,
+      "decision": "refuse",
+      "reason": "operation-mismatch",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "omitted-action-defaults-to-kind",
+      "class": "benign",
+      "pass": true,
+      "falsePass": false,
+      "decision": "allow",
+      "reason": "exact-approval",
+      "sideEffect": true,
+      "ignoredMarkers": [],
+      "reasons": []
+    },
+    {
+      "id": "prior-unknown-other-operation",
+      "class": "benign",
+      "pass": true,
+      "falsePass": false,
+      "decision": "draft",
+      "reason": "needs-exact-approval",
+      "sideEffect": false,
+      "ignoredMarkers": [],
       "reasons": []
     }
   ]

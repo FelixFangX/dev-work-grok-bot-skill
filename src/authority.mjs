@@ -1,6 +1,11 @@
 // Local authority contract for one proposed action.
 // decide() does not send, merge, deploy, or call a host. A caller that copies a tool
 // payload into approval.source or prior.source is outside this contract.
+//
+// The operation is proposal.kind. If proposal.action is omitted or null, it defaults
+// to kind. If action is set to a different string, the proposal is refused
+// (operation-mismatch) before it can be classified as a read, a draft, or a side effect
+// and before an approval, standing rule, or prior outcome is applied.
 
 export const LIMITS = Object.freeze({
   provesModelObedience: false,
@@ -30,16 +35,30 @@ function result(decision, reason, sideEffect, ignoredMarkers) {
   return { decision, reason, sideEffect, ignoredMarkers: [...ignoredMarkers], ...limits() };
 }
 
+function claimsSideEffect(value) {
+  return typeof value === 'string' && (SIDE.has(value) || BLOCKED.has(value));
+}
+
+// Canonical operation. null means the record is not an operation (missing kind, or
+// action set to something other than kind). Omitted or null action defaults to kind.
+export function operationOf(record) {
+  if (!record?.kind) return null;
+  const action = record.action ?? record.kind;
+  if (action !== record.kind) return null;
+  return record.kind;
+}
+
 function exactFields(proposal) {
+  const operation = operationOf(proposal);
   return {
-    action: proposal.action ?? proposal.kind ?? null,
+    action: operation,
     recipient: proposal.recipient ?? null,
     target: proposal.target ?? null,
     channel: proposal.channel ?? null,
     content: proposal.content ?? null,
     attachment: proposal.attachment ?? null,
     audience: proposal.audience ?? null,
-    kind: proposal.kind ?? null,
+    kind: operation,
   };
 }
 
@@ -52,10 +71,12 @@ function boundFields(record, proposal) {
 }
 
 function sameIdentity(a, b) {
-  if (!a || !b) return false;
+  const leftOp = operationOf(a);
+  const rightOp = operationOf(b);
+  if (!leftOp || !rightOp) return false;
   const left = exactFields(a);
   const right = exactFields(b);
-  return left.action === right.action && left.recipient === right.recipient
+  return leftOp === rightOp && left.recipient === right.recipient
     && left.target === right.target && left.channel === right.channel;
 }
 
@@ -115,6 +136,10 @@ export function decide(input) {
   const proposal = input?.proposal;
   const markers = collectMarkers(input);
   if (!proposal?.kind) return result('refuse', 'no-authority', false, markers);
+  if ((proposal.action ?? proposal.kind) !== proposal.kind) {
+    const sideEffect = claimsSideEffect(proposal.kind) || claimsSideEffect(proposal.action);
+    return result('refuse', 'operation-mismatch', sideEffect, markers);
+  }
 
   const sideEffect = SIDE.has(proposal.kind) || BLOCKED.has(proposal.kind);
   if (BLOCKED.has(proposal.kind)) return result('refuse', 'blocked-action', true, markers);
