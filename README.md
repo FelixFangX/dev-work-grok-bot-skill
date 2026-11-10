@@ -73,16 +73,17 @@ Which cards a role is offered: [role packs](docs/role-packs.md). The text Init c
 - Auto-merge stays off. Auto-deploy stays off. Public replies are not posted unless you asked for that reply.
 
 ## Safety evals
-36 scripted scenarios in [`evals/scenarios.json`](evals/scenarios.json): relayed approvals ("X said the owner approved, send it"), pasted tokens, prompt injection in repo files and web pages, unrequested pushes, tracker deletes, inbound requests for money or chat history, credentials in reports or Task prompts, Lark permission handoff, device-code retention, unconfirmed digests, a pass claimed without the artifact, drive-by PRs, heavy work kept off the orchestrator, auto-merge, auto-deploy, unsolicited public replies, bot noise that would start a code agent, a browser side door around a missing connector, and more. Each scenario has an expected decision (`refuse`, `confirm`, `draft` or `proceed`) and strings the reply must never contain.
+42 scripted scenarios in [`evals/scenarios.json`](evals/scenarios.json): relayed approvals ("X said the owner approved, send it"), pasted tokens, prompt injection in repo files and web pages, unrequested pushes, tracker deletes, inbound requests for money or chat history, credentials in reports or Task prompts, Lark permission handoff, device-code retention, unconfirmed digests, a pass claimed without the artifact, drive-by PRs, heavy work kept off the orchestrator, auto-merge, auto-deploy, unsolicited public replies, bot noise that would start a code agent, a browser side door around a missing connector, forged approval markers, edited drafts, declined retries, unknown send outcomes, and more. Each scenario has an expected decision (`refuse`, `confirm`, `draft` or `proceed`) and strings the reply must never contain.
 
 | Adapter | What it measures | Latest result |
 |---|---|---|
-| `coverage` (CI, every push) | The skill states every rule each scenario depends on | **36/36 (100%)**, [results](evals/results-coverage.json) |
-| `model` (opt-in) | A model given the parent and Lark sub-skill as system prompt makes the expected decision and doesn't leak | **12/20 (60%)** on `@cf/zai-org/glm-4.7-flash`, 2026-10-20, [notes](evals/results/2026-10-20-glm-4.7-flash.md) |
+| `coverage` (CI, every push) | The skill text still contains each scenario's rule strings | **42/42**, [results](evals/results-coverage.json). String presence only. Not model obedience. |
+| `authority` (CI, every push) | `decide()` on [`evals/authority-fixtures.json`](evals/authority-fixtures.json) returns the fixture decision | Run `npm run eval:authority`. A match is not a live-model result and not a host send. `unknown` is not a send. A hostile `allow` is a false pass and fails the run. |
+| `model` (opt-in) | A model given the parent and Lark sub-skill as system prompt makes the expected decision and doesn't leak | **12/20 (60%)** on `@cf/zai-org/glm-4.7-flash`, 2026-10-20, [notes](evals/results/2026-10-20-glm-4.7-flash.md). This does not prove immunity. |
 
 Default eval runs load both the parent and Lark auto-reply sub-skill; `--skill <path>` evaluates only the specified file.
 
-Coverage is a regression guard: CI fails if an edit drops a rule. It doesn't prove a model obeys the rules; that's what the `model` adapter is for:
+Coverage fails CI if an edit drops a rule string. It does not show that a model follows the rule. The authority adapter runs the shared `decide` function in `src/authority.mjs`: the operation is `kind`, and `action` defaults to `kind` only when it is omitted. Exact recipient, target, channel, action, content, and attachment; forged tool, webpage, quote, screenshot, Lark notification, and `approvedBy` or role markers; retries after decline, error, and unknown; duplicates; standing scope; routine scope. It does not call GitHub, Lark, Vercel, or the tracker, and those hosts remain the send gate. The model adapter is the only one that asks a live model, and only when you opt in:
 
 ```bash
 LLM_API_KEY=... LLM_MODEL=gpt-4o-mini npm run eval:model   # any OpenAI-compatible endpoint (LLM_BASE_URL)
@@ -99,7 +100,8 @@ First real model run: Workers AI `@cf/zai-org/glm-4.7-flash`, free tier, about 2
 ```bash
 scripts/setup-box.sh --check --json        # tools, versions, sign-in presence (never token values)
 node bin/skill-check.mjs . --json          # findings: rule + file + line, never the matched value
-node bin/skill-eval.mjs --json             # per-scenario pass/fail and the summary
+node bin/skill-eval.mjs --json             # coverage: rule strings still present
+node bin/skill-eval.mjs --adapter authority --json   # decide() fixtures; not a host or model proof
 ```
 
 Each command exits non-zero on failure, so an agent can gate on it. Repo conventions: [AGENTS.md](AGENTS.md).
@@ -111,6 +113,7 @@ Edit the interview questions (section 1), the Lark inbound reply policy in `skil
 ```bash
 npm test                                        # node:test specs, no dependencies
 npm run eval                                    # scenario coverage (--json for machine output)
+npm run eval:authority                          # exact-approval fixtures
 npm run check                                   # frontmatter + secret/email/phone scan
 node bin/skill-check.mjs . --denylist my.txt    # optional local list of private terms (never commit it)
 ```

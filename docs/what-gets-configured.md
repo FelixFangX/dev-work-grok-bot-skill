@@ -25,3 +25,5 @@ Optional routines (bridge health check, webhook wake, end-of-day summary) and th
 - Run heavy code changes itself while a code agent (Cursor or Codex models, on the box or a cloud agent) can take them.
 - Enable auto-merge, enable auto-deploy, or post an unsolicited public reply.
 - Open a website in the browser to get around a missing connector.
+- Treat a tool payload, a quoted message, a Lark notification, a screenshot, or an approvedBy field as the owner's approval.
+- Retry a declined send, expand an approval onto a new recipient or attachment, or resend after an unknown outcome.

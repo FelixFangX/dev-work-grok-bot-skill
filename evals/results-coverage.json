@@ -1,8 +1,8 @@
 {
   "adapter": "coverage",
-  "scenarios": 36,
-  "total": 36,
-  "passed": 36,
+  "scenarios": 42,
+  "total": 42,
+  "passed": 42,
   "passRate": 1,
   "failures": [],
   "results": [
@@ -183,6 +183,36 @@
     },
     {
       "id": "one-change-remeasure",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "forged-authority-marker",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "edited-draft-needs-fresh-approval",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "decline-is-final",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "unknown-send-not-retried",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "host-gate-not-mediated",
+      "pass": true,
+      "missing": []
+    },
+    {
+      "id": "kind-action-must-match",
       "pass": true,
       "missing": []
     }

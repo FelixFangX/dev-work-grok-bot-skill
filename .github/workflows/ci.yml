@@ -13,3 +13,4 @@ jobs:
       - run: npm test
       - run: npm run check   # generic patterns only; the local denylist is never committed
       - run: npm run eval   # scenario coverage; fails below 100%
+      - run: npm run eval:authority   # exact-approval fixtures; not a live-model or host-gate proof
