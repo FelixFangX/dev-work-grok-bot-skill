@@ -28,3 +28,11 @@ test('leak exits 1 and denylist file is honoured', () => {
 test('repo without a skill is an error', () => {
   assert.equal(spawnSync('node', [bin, repo({ 'README.md': '#' })]).status, 1);
 });
+test('SECURITY.md may list a contact email, but secrets in SECURITY.md and emails elsewhere still fail', () => {
+  const clean = repo({ 'skills/s/SKILL.md': skill, 'SECURITY.md': 'Report to sec' + '@example.org\n' });
+  assert.equal(spawnSync('node', [bin, clean]).status, 0);
+  const leakedSecret = repo({ 'skills/s/SKILL.md': skill, 'SECURITY.md': 'ghp_' + 'a'.repeat(36) + '\n' });
+  assert.equal(spawnSync('node', [bin, leakedSecret]).status, 1);
+  const leakedEmail = repo({ 'skills/s/SKILL.md': skill, 'README.md': 'Mail sec' + '@example.org\n' });
+  assert.equal(spawnSync('node', [bin, leakedEmail]).status, 1);
+});
