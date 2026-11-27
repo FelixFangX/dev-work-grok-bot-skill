@@ -5,8 +5,6 @@
 
 **A naked chat will send it, push it, and remember the token. This Grok Bot skill will not.**
 
-Put that sentence in the GitHub description.
-
 A raw ChatGPT or Claude window has no box, no connect card, and no rule a test can fail. Ask it to tell the team the API is ready and it posts. Paste a token and the token stays in the thread. This skill is the harness: same jobs, with a stop before the send, the push, and the secret.
 
 ## Install

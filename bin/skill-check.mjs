@@ -29,7 +29,13 @@ const files = listFiles().filter(f => TEXT.test(f.split('/').pop()) && resolve(r
 const skills = files.filter(f => /(^|\/)SKILL\.md$/.test(f));
 if (!skills.length) findings.push({ level: 'error', rule: 'skill-missing', file: '.', message: 'no SKILL.md found' });
 for (const f of skills) for (const x of checkSkill(readFileSync(join(root, f), 'utf8'))) findings.push({ ...x, file: f });
-for (const f of files) for (const x of scanText(readFileSync(join(root, f), 'utf8'), { denylist })) findings.push({ ...x, file: f });
+const ALLOW_EMAIL = new Set(['SECURITY.md']);
+for (const f of files) {
+  for (const x of scanText(readFileSync(join(root, f), 'utf8'), { denylist })) {
+    if (x.rule === 'email' && ALLOW_EMAIL.has(f)) continue;
+    findings.push({ ...x, file: f });
+  }
+}
 
 const SH = 'scripts/setup-box.sh', DOC = 'docs/box-environment.md';
 if (files.includes(SH) || files.includes(DOC)) {
